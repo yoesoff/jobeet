@@ -56,8 +56,9 @@ class jobActions extends sfActions
 
   public function executeEdit(sfWebRequest $request)
   {
-    $this->forward404Unless($jobeet_job = Doctrine_Core::getTable('JobeetJob')->find(array($request->getParameter('id'))), sprintf('Object jobeet_job does not exist (%s).', $request->getParameter('id')));
-    $this->form = new JobeetJobForm($jobeet_job);
+//    $this->forward404Unless($jobeet_job = Doctrine_Core::getTable('JobeetJob')->find(array($request->getParameter('id'))), sprintf('Object jobeet_job does not exist (%s).', $request->getParameter('id')));
+//    $this->form = new JobeetJobForm($jobeet_job);
+      $this->form = new JobeetJobForm($this->getRoute()->getObject());
   }
 
   public function executeUpdate(sfWebRequest $request)
@@ -91,4 +92,18 @@ class jobActions extends sfActions
       $this->redirect('job/edit?id='.$jobeet_job->getId());
     }
   }
+  
+    public function executePublish(sfWebRequest $request)
+    {
+      $request->checkCSRFProtection();
+
+      $job = $this->getRoute()->getObject();
+      $job->publish();
+
+      $this->getUser()->setFlash('notice', sprintf('Your job is now online for %s days.', sfConfig::get('app_active_days')));
+
+      $this->redirect('job_show_user', $job);
+    }
+  
+  
 }

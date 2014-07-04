@@ -1,3 +1,10 @@
+<?php if ($sf_request->getParameter('token') == $jobeet_job->getToken()): ?>
+    <?php
+        #@todo:You will be able to see the "activated" bar after the next section.
+        include_partial('job/admin', array('job' => $jobeet_job)) 
+    ?>
+<?php endif ?>
+
 <table>
   <tbody>
     <tr>
@@ -18,7 +25,10 @@
     </tr>
     <tr>
       <th>Logo:</th>
-      <td><?php echo $jobeet_job->getLogo() ?></td>
+      <td>
+          <?php //echo $jobeet_job->getLogo() ?>
+          <img src="/uploads/jobs/<?php echo $jobeet_job->getLogo() ?>" alt="<?php echo $jobeet_job->getCompany() ?> logo" />
+      </td>
     </tr>
     <tr>
       <th>Url:</th>
@@ -73,6 +83,8 @@
 
 <hr />
 
-<a href="<?php echo url_for('job/edit?id='.$jobeet_job->getId()) ?>">Edit</a>
+<!-- <a href="<?php echo url_for('job/edit?id='.$jobeet_job->getId()) ?>">Edit</a> -->
+<a href="<?php echo url_for('job_edit', $jobeet_job) ?>">Edit</a>
+
 &nbsp;
 <a href="<?php echo url_for('job/index') ?>">List</a>
