@@ -28,15 +28,6 @@ class jobActions extends sfActions
       $this->categories = Doctrine_Core::getTable('JobeetCategory')->getWithJobs();
   }
 
-  public function executeShow(sfWebRequest $request)
-  {
-
-      $this->jobeet_job = $this->getRoute()->getObject();
-      //$this->jobeet_job = Doctrine_Core::getTable('JobeetJob')->find(array($request->getParameter('id')));
-    
-      //$this->forward404Unless($this->jobeet_job);
-      
-  }
 
   public function executeNew(sfWebRequest $request)
   {
@@ -104,6 +95,37 @@ class jobActions extends sfActions
 
       $this->redirect('job_show_user', $job);
     }
-  
-  
+    
+    public function executeExtend(sfWebRequest $request)
+    {
+      $request->checkCSRFProtection();
+
+      $job = $this->getRoute()->getObject();
+      $this->forward404Unless($job->extend());
+
+      $this->getUser()->setFlash('notice', sprintf('Your job validity has been extended until %s.', $job->getDateTimeObject('expires_at')->format('m/d/Y')));
+
+      $this->redirect($this->generateUrl('job_show_user', $job));
+    }
+
+//    public function executeShow(sfWebRequest $request)
+//    {
+//      $this->job = $this->getRoute()->getObject();
+//
+//      // fetch jobs already stored in the job history
+//      $jobs = $this->getUser()->getAttribute('job_history', array());
+//
+//      // add the current job at the beginning of the array
+//      array_unshift($jobs, $this->job->getId());
+//
+//      // store the new job history back into the session
+//      $this->getUser()->setAttribute('job_history', $jobs);
+//    }
+
+    public function executeShow(sfWebRequest $request)
+    {
+      $this->job = $this->getRoute()->getObject();
+      $this->getUser()->addJobToHistory($this->job);
+    }
+
 }

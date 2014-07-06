@@ -10,7 +10,23 @@
  */
 class JobeetCategoryForm extends BaseJobeetCategoryForm
 {
-  public function configure()
+ public function configure()
   {
+    $this->removeFields();
+ 
+    $this->validatorSchema['email'] = new sfValidatorAnd(array(
+      $this->validatorSchema['email'],
+      new sfValidatorEmail(),
+    ));
+
+  }
+ 
+  protected function removeFields()
+  {
+    unset(
+      $this['created_at'], $this['updated_at'],
+      $this['expires_at'], $this['is_activated'],
+      $this['token']
+    );
   }
 }

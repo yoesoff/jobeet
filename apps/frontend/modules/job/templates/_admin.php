@@ -17,9 +17,11 @@
           Expires in <strong><?php echo $job->getDaysBeforeExpires() ?></strong> days
         <?php endif ?>
  
+        <!-- apps/frontend/modules/job/templates/_admin.php -->
         <?php if ($job->expiresSoon()): ?>
-         - <a href="">Extend</a> for another <?php echo sfConfig::get('app_active_days') ?> days
+         - <?php echo link_to('Extend', 'job_extend', $job, array('method' => 'put')) ?> for another <?php echo sfConfig::get('app_active_days') ?> days
         <?php endif ?>
+         
       </li>
     <?php else: ?>
       <li>

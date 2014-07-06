@@ -3,11 +3,17 @@
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
+    
+    <link rel="alternate" type="application/atom+xml" title="Latest Jobs" href="<?php echo url_for('job', array('sf_format' => 'atom'), true) ?>" />  
+      
     <title>Jobeet - Your best job board</title>
     <link rel="shortcut icon" href="/favicon.ico" />
+    <!-- apps/frontend/templates/layout.php -->
+    
     <?php include_javascripts() ?>
     <?php include_stylesheets() ?>
   </head>
+
   <body>
     <div id="container">
       <div id="header">
@@ -38,7 +44,16 @@
           </div>
         </div>
       </div>
- 
+        
+    
+    <?php if ($sf_user->hasFlash('notice')): ?>
+        <div class="flash_notice"><?php echo $sf_user->getFlash('notice') ?></div>
+    <?php endif ?>
+
+    <?php if ($sf_user->hasFlash('error')): ?>
+        <div class="flash_error"><?php echo $sf_user->getFlash('error') ?></div>
+    <?php endif ?>
+         
       <div id="content">
         <?php if ($sf_user->hasFlash('notice')): ?>
           <div class="flash_notice">
@@ -52,6 +67,17 @@
           </div>
         <?php endif ?>
  
+        <div id="job_history">
+            Recent viewed jobs:
+            <ul>
+              <?php foreach ($sf_user->getJobHistory() as $job): ?>
+                <li>
+                  <?php echo link_to($job->getPosition().' - '.$job->getCompany(), 'job_show_user', $job) ?>
+                </li>
+              <?php endforeach ?>
+            </ul>
+        </div>
+    
         <div class="content">
           <?php echo $sf_content ?>
         </div>
@@ -70,6 +96,9 @@
             <li class="feed"><a href="">Full feed</a></li>
             <li><a href="">Jobeet API</a></li>
             <li class="last"><a href="">Affiliates</a></li>
+            <li class="feed">
+                <a href="<?php echo url_for('job', array('sf_format' => 'atom')) ?>">Full feed</a>
+            </li>
           </ul>
         </div>
       </div>

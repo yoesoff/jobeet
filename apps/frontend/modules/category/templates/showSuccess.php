@@ -3,9 +3,11 @@
 <?php slot('title', sprintf('Jobs in the %s category', $category->getName())) ?>
  
 <div class="category">
+    
     <div class="feed">
-      <a href="">Feed</a>
+       <a href="<?php echo url_for('category', array('sf_subject' => $category, 'sf_format' => 'atom')) ?>">xFeed</a>
     </div>
+    
     <h1><?php echo $category ?></h1>
 </div>
  
