@@ -10,6 +10,8 @@
     <link rel="shortcut icon" href="/favicon.ico" />
     <!-- apps/frontend/templates/layout.php -->
     
+    <?php use_javascript('jquery.js') ?>
+    <?php use_javascript('search.js') ?>
     <?php include_javascripts() ?>
     <?php include_stylesheets() ?>
   </head>
@@ -31,18 +33,18 @@
             </div>
  
             <div class="search">
-            
-                <h2>Ask for a job</h2>
-                <form action="<?php echo url_for('job_search') ?>" method="get">
-                  <input type="text" name="query" value="<?php echo $sf_request->getParameter('query') ?>" id="search_keywords" />
-                  <input type="submit" value="search" />
-                  <div class="help">
-                    Enter some keywords (city, country, position, ...)
-                  </div>
-                </form>
-              
+              <h2>Ask for a job</h2>
+              <form action="<?php echo url_for('job_search') ?>" method="get">
+                <input type="text" name="query" value="<?php echo $sf_request->getParameter('query') ?>" id="search_keywords" />
+                <input type="submit" value="search" />
+                <img id="loader" src="/images/loader.gif" style="vertical-align: middle; display: none" />
+                <div class="help">
+                  Enter some keywords (city, country, position, ...)
+                </div>
+              </form>
             </div>
-          </div>
+              
+          </div>    
         </div>
       </div>
         

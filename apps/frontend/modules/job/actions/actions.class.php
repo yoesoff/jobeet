@@ -10,12 +10,6 @@
  */
 class jobActions extends sfActions
 {
-    public function executeSearch(sfWebRequest $request)
-    {
-      $this->forwardUnless($query = $request->getParameter('query'), 'job', 'index');
-
-      $this->jobs = Doctrine_Core::getTable('JobeetJob') ->getForLuceneQuery($query);
-    }
     
   public function executeIndex(sfWebRequest $request)
   {
@@ -34,7 +28,6 @@ class jobActions extends sfActions
       
       $this->categories = Doctrine_Core::getTable('JobeetCategory')->getWithJobs();
   }
-
 
   public function executeNew(sfWebRequest $request)
   {
@@ -135,4 +128,28 @@ class jobActions extends sfActions
       $this->getUser()->addJobToHistory($this->jobeet_job);
     }
 
+    public function executeSearch(sfWebRequest $request)
+    {
+      $this->forwardUnless($query = $request->getParameter('query'), 'job', 'index');
+
+      $this->jobs = Doctrine_Core::getTable('JobeetJob')->getForLuceneQuery($query);
+
+      if ($request->isXmlHttpRequest())
+      {
+        if ('*' == $query || !$this->jobs)
+        {
+          return $this->renderText('No results.');
+        }
+
+        return $this->renderPartial('job/list', array('jobs' => $this->jobs));
+      }
+    }
+    
+//    public function executeSearch(sfWebRequest $request)
+//    {
+//      $this->forwardUnless($query = $request->getParameter('query'), 'job', 'index');
+//
+//      $this->jobs = Doctrine_Core::getTable('JobeetJob') ->getForLuceneQuery($query);
+//    }
+    
 }

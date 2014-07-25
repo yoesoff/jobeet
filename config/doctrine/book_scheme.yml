@@ -1,0 +1,6 @@
+Book:  
+ columns:  
+  title:       { type: string(60), notnull: true }  
+  price:       { type: double }  
+  description: { type: string }  
+  author:      { type: string(60) }  
